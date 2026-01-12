@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: smart-comments-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=True
+      - SECRET_KEY=django-insecure-dev-key-change-in-production
+      - CLASSIFIER_TYPE=rules
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - OPENAI_MODEL=gpt-3.5-turbo
+      - POSTGRES_DB=smart_comments
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+    volumes:
+      - ./backend:/app
+      - backend_static:/app/staticfiles
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - smart-comments-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: smart-comments-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - smart-comments-network
+
+  db:
+    image: postgres:15-alpine
+    container_name: smart-comments-db
+    environment:
+      - POSTGRES_DB=smart_comments
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - smart-comments-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  backend_static:
+  postgres_data:
+
+networks:
+  smart-comments-network:
+    driver: bridge

@@ -1,0 +1,50 @@
+.post-list {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.post-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.post-list-header h2 {
+  margin: 0;
+  font-size: 1.75rem;
+  color: #333;
+}
+
+.post-list-count {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.post-list-items {
+  margin-bottom: 24px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 48px;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.loading {
+  text-align: center;
+  padding: 48px;
+  font-size: 1.1rem;
+  color: #666;
+}
+
+.error {
+  text-align: center;
+  padding: 48px;
+  color: #dc3545;
+  font-size: 1.1rem;
+}
