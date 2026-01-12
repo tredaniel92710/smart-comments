@@ -63,8 +63,8 @@ class CommentViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(flagged_comments, many=True)
         return Response(serializer.data)
     
-    @action(detail=False, methods=['get'])
-    def settings(self, request):
+    @action(detail=False, methods=['get'], url_path='settings')
+    def comment_settings(self, request):
         """Get comment settings (whether comments are enabled)."""
         settings = CommentSettings.load()
         return Response({
